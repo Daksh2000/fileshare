@@ -1,0 +1,33 @@
+<!-- fileupload/templates/fileupload/home.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>Welcome {{ user.username }}</h1>
+
+  <!-- If user is authenticated, show their uploaded files -->
+  {% if user.is_authenticated %}
+    <h2>Your Uploaded Files</h2>
+    <ul>
+      {% for file in user_files %}
+        <li>
+          {{ file.title }} - <a href="{{ file.file.url }}">Download</a> |
+          <a href="{% url 'delete-file' file.id %}">Delete</a>
+        </li>
+      {% empty %}
+        <li>You haven't uploaded any files yet.</li>
+      {% endfor %}
+    </ul>
+
+    <a href="{% url 'upload-file' %}">Upload a New File</a><br>
+    
+    <!-- Logout form for POST request -->
+    <form method="post" action="{% url 'logout' %}">
+      {% csrf_token %}
+      <button type="submit" style="border:none; background:none; color:blue; cursor:pointer;">
+        Logout
+      </button>
+    </form>
+  {% else %}
+    <p>You are not logged in. <a href="{% url 'login' %}">Login</a></p>
+  {% endif %}
+{% endblock %}

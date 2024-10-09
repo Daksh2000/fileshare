@@ -1,0 +1,41 @@
+<!-- templates/fileupload/file_list.html -->
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="container">
+        <h2>Your Uploaded Files</h2>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>File</th>
+                    <th>Uploaded At</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for file in files %}
+                <tr>
+                    <td>{{ file.title }}</td>
+                    <td>{{ file.description }}</td>
+                    <td><a href="{{ file.file.url }}">{{ file.file.name }}</a></td>
+                    <td>{{ file.uploaded_at }}</td>
+                    <td>
+                        <a href="{% url 'delete-file' file.pk %}" class="btn btn-danger btn-sm">Delete</a>
+                        <a href="{% url 'share-file' file.pk %}" class="btn btn-info btn-sm">Share</a>
+                        {% if file.public_url %}
+                        <p>Shared at: <a href="{% url 'public-file' file.public_url %}">{{ file.public_url }}</a></p>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5">No files uploaded yet.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <p><a href="{% url 'upload-file' %}" class="btn btn-success">Upload New File</a></p>
+    </div>
+{% endblock %}

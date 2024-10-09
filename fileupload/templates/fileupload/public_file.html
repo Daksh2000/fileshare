@@ -1,0 +1,11 @@
+<!-- templates/fileupload/public_file.html -->
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="container">
+        <h2>Public File View</h2>
+        <p><strong>Title:</strong> {{ file.title }}</p>
+        <p><strong>Description:</strong> {{ file.description }}</p>
+        <p><strong>File:</strong> <a href="{{ file.file.url }}">{{ file.file.name }}</a></p>
+    </div>
+{% endblock %}
