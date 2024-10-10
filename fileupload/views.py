@@ -21,14 +21,16 @@ def register(request):
     return render(request, 'fileupload/register.html', {'form': form})
 
 
-@login_required
 def home_view(request):
-    # Fetch the files uploaded by the logged-in user
-    user_files = File.objects.filter(uploaded_by=request.user)
+    if request.user.is_authenticated:
+        # If the user is authenticated, fetch their uploaded files
+        user_files = File.objects.filter(uploaded_by=request.user)
 
-    return render(request, 'fileupload/home.html', {
-        'user_files': user_files
-    })
+    else:
+        user_files = None  # No files for unauthenticated users
+
+    return render(request, 'fileupload/home.html', {'user_files': user_files})
+
 
 
 @login_required
